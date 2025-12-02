@@ -72,3 +72,6 @@ def iniciar_servidor():
             hilo.start()
         except OSError:
             break
+
+if __name__ == "__main__":
+    iniciar_servidor()
