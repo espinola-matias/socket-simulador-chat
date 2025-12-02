@@ -32,3 +32,10 @@ def manejar_cliente(cliente, direccion):
                 break
             else:
                 mensajes_enviados(f"{nombre}: {mensaje}", cliente)
+
+    except:
+        print(f"Error con el cliente {direccion}")
+    finally:
+        cliente.close()
+        if cliente in clientes_activos:
+            del clientes_activos[cliente]
