@@ -39,3 +39,20 @@ def manejar_cliente(cliente, direccion):
         cliente.close()
         if cliente in clientes_activos:
             del clientes_activos[cliente]
+
+# Hilo del servidor con manejo de comandos, al morir el cliente pasa a ser false 
+def administrar_servidor(servidor):
+    while True:
+        comando = input("Comando del servidor ('salir' para apagar): \n")
+        if comando.strip().lower() == "salir":
+            print("Cerrando el servidor")
+            for cliente in list(clientes_activos):
+                try:
+                    cliente.send("El servidor a cerrado la conexion".encode()) 
+                except Exception as error:
+                    print(f"Error al cerrar cliente: {error}")
+                finally:
+                    cliente.close()
+                    
+            servidor.close()
+            break
