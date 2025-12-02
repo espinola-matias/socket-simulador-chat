@@ -49,7 +49,7 @@ def iniciar_cliente():
     cliente.send(nombre.encode())
 
     hilo = threading.Thread(target=recibir_mensajes, args=(cliente,)).start()
-    
+
     while True:
         try:
             mensaje = input()
@@ -81,3 +81,6 @@ def iniciar_cliente():
                 break
     
     cliente.close()
+
+if __name__ == "__main__":
+    iniciar_cliente()
