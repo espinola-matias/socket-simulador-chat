@@ -50,3 +50,34 @@ def iniciar_cliente():
 
     hilo = threading.Thread(target=recibir_mensajes, args=(cliente,)).start()
     
+    while True:
+        try:
+            mensaje = input()
+            if mensaje.strip().lower() == "salir":
+                salir_cliente = True
+                cliente.send(mensaje.encode())
+                print("Haz abandonado el grupo")
+                break
+            else:
+                cliente.send(mensaje.encode())
+        except:
+            print("Error al enviar mensaje, intentando reconectar")
+            cliente.close()
+
+            # nuevo intento de conexion
+            cliente = conectar_servidor()
+            if not cliente:
+                exit()
+
+            try:
+                cliente.send(nombre.encode())
+                print("Conexion restablecida")
+
+                # nuevo hilo de escucha
+                hilo = threading.Thread(target=recibir_mensajes, args=(cliente,))
+                hilo.start()
+            except:
+                print("Fallo el reenvio de datos tras reconexion")
+                break
+    
+    cliente.close()
