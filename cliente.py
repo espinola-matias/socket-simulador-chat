@@ -33,3 +33,20 @@ def conectar_servidor():
     else:
         print("No se logro restablecer la conexion con el servidor")
         exit()
+
+def iniciar_cliente():
+    global salir_cliente
+    cliente = conectar_servidor()
+    if not cliente:
+        exit()
+
+    while True:
+        nombre = input("Ingresa tu nombre: ")
+        if nombre:
+            break
+        print("Debes colocar tu nombre")
+
+    cliente.send(nombre.encode())
+
+    hilo = threading.Thread(target=recibir_mensajes, args=(cliente,)).start()
+    
