@@ -56,3 +56,19 @@ def administrar_servidor(servidor):
                     
             servidor.close()
             break
+
+def iniciar_servidor():
+    servidor = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    servidor.bind(("localhost", 9999))
+    servidor.listen(40)
+    print("Servidor esperando conexiones")
+
+    threading.Thread(target=administrar_servidor, args=(servidor,)).start()
+
+    while True:
+        try:
+            cliente, direccion = servidor.accept()
+            hilo = threading.Thread(target=manejar_cliente, args=(cliente, direccion))
+            hilo.start()
+        except OSError:
+            break
